@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DHAARI | Enter the Movie Industry</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              cinematic: {
+                black: '#0B0B0F',    /* Midnight Black - Main Background */
+                charcoal: '#1C1C24', /* Charcoal Grey - Section Background */
+                card: '#272732',     /* Slightly lighter charcoal for nested cards */
+                gold: '#D4AF37',     /* Royal Gold - Brand Accent */
+                goldLight: '#E6C86E',/* Light Gold - Icon Hover */
+                goldHighlight: '#FFD166', /* Spotlight Gold - Hover Highlight */
+                goldMuted: '#A88F2D',/* Muted Gold - Borders */
+                red: '#C62828',      /* Crimson Red - Call-To-Action */
+                redDeep: '#8E0000',  /* Deep Red - CTA Hover */
+                textMain: '#FFFFFF', /* Pure White - Headings */
+                textBody: '#B8B8C2', /* Soft Grey - Body Text */
+                textMuted: '#8A8A95',/* Ash Grey - Muted Text */
+                glass: 'rgba(28, 28, 36, 0.7)', /* Glass effect based on charcoal */
+              }
+            },
+            fontFamily: {
+              sans: ['Montserrat', 'sans-serif'],
+              display: ['Playfair Display', 'serif'],
+            },
+            backgroundImage: {
+              'spotlight': 'radial-gradient(circle at top center, rgba(212, 175, 55, 0.15) 0%, rgba(11, 11, 15, 0) 60%)',
+              'gold-glow': 'linear-gradient(135deg, #D4AF37, #FFD166)',
+              'action-red': 'linear-gradient(135deg, #C62828, #8E0000)',
+              'dark-fade': 'linear-gradient(180deg, #0B0B0F, #1C1C24)',
+            }
+          }
+        }
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <style>
+      body {
+        background-color: #0B0B0F;
+        color: #B8B8C2;
+        overflow-x: hidden;
+        background: linear-gradient(180deg, #0B0B0F, #1C1C24);
+        min-height: 100vh;
+      }
+      html {
+        scroll-padding-top: 100px; /* offset for fixed navbar */
+      }
+      h1, h2, h3, h4, h5, h6 {
+        color: #FFFFFF;
+      }
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #0B0B0F; 
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #1C1C24; 
+        border-radius: 4px;
+        border: 1px solid #A88F2D;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #D4AF37; 
+      }
+      
+      .glass-panel {
+        background: rgba(28, 28, 36, 0.6);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(168, 143, 45, 0.2); /* Muted Gold Border */
+      }
+      
+      /* Utilities for Image Blending */
+      .mask-gradient-b {
+        mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+        -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+      }
+      .mask-gradient-r {
+        mask-image: linear-gradient(to right, black 70%, transparent 100%);
+        -webkit-mask-image: linear-gradient(to right, black 70%, transparent 100%);
+      }
+      .mask-radial {
+         mask-image: radial-gradient(circle, black 40%, transparent 100%);
+        -webkit-mask-image: radial-gradient(circle, black 40%, transparent 100%);
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.3",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react-router-dom": "https://esm.sh/react-router-dom@6.22.3",
+    "@remix-run/router": "https://esm.sh/@remix-run/router@1.15.3",
+    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
+    "framer-motion": "https://esm.sh/framer-motion@^12.28.1"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
