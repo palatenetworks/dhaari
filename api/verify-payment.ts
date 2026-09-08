@@ -72,7 +72,7 @@ async function confirmWithRazorpay(paymentId: string, authHeader: string): Promi
   return null;
 }
 
-export default async function handler(req: any, res: any) {
+async function handler(req: any, res: any) {
   try {
     return await run(req, res);
   } catch (err: any) {
@@ -80,6 +80,8 @@ export default async function handler(req: any, res: any) {
     return fail(res, 500, 'SERVER_ERROR', `Unhandled: ${err?.message || String(err)}`);
   }
 }
+
+export = handler;
 
 async function run(req: any, res: any) {
   if (req.method !== 'POST') {
