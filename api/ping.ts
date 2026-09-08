@@ -2,7 +2,9 @@
 // FUNCTION_INVOCATION_FAILED, the problem is the Vercel project config
 // (Node version / build), not our function code.
 
-function handler(_req: any, res: any) {
+import type { VercelRequest, VercelResponse } from '@vercel/node';
+
+export default function handler(_req: VercelRequest, res: VercelResponse) {
   res.status(200).json({
     ok: true,
     node: process.version,
@@ -12,5 +14,3 @@ function handler(_req: any, res: any) {
     hasEmailPassword: !!process.env.EMAIL_PASSWORD,
   });
 }
-
-export = handler;

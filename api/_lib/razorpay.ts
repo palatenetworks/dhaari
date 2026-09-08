@@ -1,5 +1,5 @@
-// Shared Razorpay helpers for the API routes (filename starts with "_" so
-// Vercel does not treat it as an HTTP route).
+// Shared Razorpay helpers for the API routes. Lives under api/_lib/ — Vercel
+// ignores underscore-prefixed paths, so these are bundled but never routed.
 
 export const RAZORPAY_BASE = 'https://api.razorpay.com/v1';
 export const CURRENCY = 'INR';
@@ -45,4 +45,23 @@ export async function fetchWithTimeout(
 /** Standard JSON error response with a machine-readable code. */
 export function fail(res: any, status: number, code: string, message: string) {
   return res.status(status).json({ error: message, code });
+}
+
+/**
+ * Reads the JSON body off a Vercel request. Vercel parses it for us when the
+ * client sends `Content-Type: application/json`, but hands back a raw string or
+ * Buffer otherwise — accept all three rather than silently seeing an empty body.
+ */
+export function readJsonBody(req: any): { ok: true; body: any } | { ok: false } {
+  let b: any = req?.body;
+  if (b === undefined || b === null || b === '') return { ok: true, body: {} };
+  if (Buffer.isBuffer(b)) b = b.toString('utf8');
+  if (typeof b === 'string') {
+    try {
+      b = JSON.parse(b);
+    } catch {
+      return { ok: false };
+    }
+  }
+  return { ok: true, body: b ?? {} };
 }

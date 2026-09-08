@@ -1,0 +1,24 @@
+{
+  // Separate from the root tsconfig on purpose. The root one is tuned for Vite
+  // (moduleResolution "bundler", allowImportingTsExtensions, noEmit) — those are
+  // bundler-only options and they break the Vercel serverless compile, which is
+  // what caused FUNCTION_INVOCATION_FAILED on every /api route. Vercel picks the
+  // nearest tsconfig to the entrypoint, so everything under /api uses this one.
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022"],
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "types": ["node"],
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": false,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "outDir": "dist"
+  },
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules"]
+}

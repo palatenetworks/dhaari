@@ -19,6 +19,16 @@ function apiDevServer(env: Record<string, string>): Plugin {
         if (!req.url || !req.url.startsWith('/api/')) return next();
 
         const routePath = req.url.split('?')[0].replace(/\/+$/, '');
+
+        // Match Vercel: underscore-prefixed paths under /api are shared helpers,
+        // never HTTP routes.
+        if (routePath.split('/').some((seg) => seg.startsWith('_'))) {
+          res.statusCode = 404;
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify({ error: `API route ${routePath} not found` }));
+          return;
+        }
+
         const file = path.resolve(__dirname, '.' + routePath + '.ts');
 
         let mod: any;

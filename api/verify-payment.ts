@@ -12,15 +12,17 @@
 // never as a hard error the applicant sees after paying.
 
 import crypto from 'crypto';
-import { validateApplication, parseApplication, type ApplicationData } from '../lib/application';
-import { sendApplicationEmails } from '../lib/email';
+import type { VercelRequest, VercelResponse } from '@vercel/node';
+import { validateApplication, parseApplication, type ApplicationData } from './_lib/application';
+import { sendApplicationEmails } from './_lib/email';
 import {
   RAZORPAY_BASE,
   getAmountPaise,
   getCredentials,
   fetchWithTimeout,
   fail,
-} from '../lib/razorpay';
+  readJsonBody,
+} from './_lib/razorpay';
 
 const LOG = '[verify-payment]';
 
@@ -72,7 +74,7 @@ async function confirmWithRazorpay(paymentId: string, authHeader: string): Promi
   return null;
 }
 
-async function handler(req: any, res: any) {
+export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     return await run(req, res);
   } catch (err: any) {
@@ -80,8 +82,6 @@ async function handler(req: any, res: any) {
     return fail(res, 500, 'SERVER_ERROR', `Unhandled: ${err?.message || String(err)}`);
   }
 }
-
-export = handler;
 
 async function run(req: any, res: any) {
   if (req.method !== 'POST') {
@@ -94,15 +94,11 @@ async function run(req: any, res: any) {
     return fail(res, 500, 'GATEWAY_NOT_CONFIGURED', 'Payment gateway not configured');
   }
 
-  let b: any = req.body;
-  if (typeof b === 'string') {
-    try {
-      b = JSON.parse(b);
-    } catch {
-      return fail(res, 400, 'BAD_JSON', 'Request body must be valid JSON');
-    }
+  const parsed = readJsonBody(req);
+  if (!parsed.ok) {
+    return fail(res, 400, 'BAD_JSON', 'Request body must be valid JSON');
   }
-  b = b ?? {};
+  const b = parsed.body;
 
   const orderId = String(b.razorpay_order_id ?? '');
   const paymentId = String(b.razorpay_payment_id ?? '');

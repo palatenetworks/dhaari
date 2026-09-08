@@ -7,7 +7,8 @@
 //
 // Env: RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET, (optional) RAZORPAY_AMOUNT_PAISE
 
-import { validateApplication, parseApplication } from '../lib/application';
+import type { VercelRequest, VercelResponse } from '@vercel/node';
+import { validateApplication, parseApplication } from './_lib/application';
 import {
   RAZORPAY_BASE,
   CURRENCY,
@@ -15,11 +16,12 @@ import {
   getCredentials,
   fetchWithTimeout,
   fail,
-} from '../lib/razorpay';
+  readJsonBody,
+} from './_lib/razorpay';
 
 const LOG = '[create-order]';
 
-async function handler(req: any, res: any) {
+export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     return await run(req, res);
   } catch (err: any) {
@@ -28,8 +30,6 @@ async function handler(req: any, res: any) {
     return fail(res, 500, 'SERVER_ERROR', `Unhandled: ${err?.message || String(err)}`);
   }
 }
-
-export = handler;
 
 async function run(req: any, res: any) {
   if (req.method !== 'POST') {
@@ -45,16 +45,11 @@ async function run(req: any, res: any) {
     return fail(res, 500, 'GATEWAY_NOT_CONFIGURED', 'Payment gateway not configured (RAZORPAY_KEY_ID / RAZORPAY_KEY_SECRET missing in this deployment)');
   }
 
-  // Body may arrive unparsed depending on content-type — handle both.
-  let b: any = req.body;
-  if (typeof b === 'string') {
-    try {
-      b = JSON.parse(b);
-    } catch {
-      return fail(res, 400, 'BAD_JSON', 'Request body must be valid JSON');
-    }
+  const parsed = readJsonBody(req);
+  if (!parsed.ok) {
+    return fail(res, 400, 'BAD_JSON', 'Request body must be valid JSON');
   }
-  b = b ?? {};
+  const b = parsed.body;
 
   const data = parseApplication(b);
 
