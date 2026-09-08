@@ -7,7 +7,7 @@ export const CURRENCY = 'INR';
 /** Amount charged, in paise. Override with RAZORPAY_AMOUNT_PAISE. Default 50000 (500 INR). */
 export function getAmountPaise(): number {
   const raw = Number(process.env.RAZORPAY_AMOUNT_PAISE);
-  return Number.isFinite(raw) && raw > 0 ? Math.round(raw) : 100;
+  return Number.isFinite(raw) && raw > 0 ? Math.round(raw) : 50000;
 }
 
 export function getCredentials():
